@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
+using Newtonsoft.Json;
 using Npgsql;
 
 namespace ComparePgsqlTool.Services
@@ -16,57 +18,67 @@ namespace ComparePgsqlTool.Services
 
         static DataCompare()
         {
-            compareTables.Add("billcodelibs", new List<string>() {"id"});
-            compareTables.Add("billcodes", new List<string>() {"code"});
-            compareTables.Add("buildingcategories", new List<string>() {"id"});
-            compareTables.Add("cities", new List<string>() {"id"});
-            //compareTables.Add("civilsettings", new List<string>() {"cid"});
-            compareTables.Add("civilsettings", new List<string>() { "id" });
+           var compareTable = File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "datacompare.js"));
 
-            compareTables.Add("countries", new List<string>() {"id"});
-            compareTables.Add("districts", new List<string>() {"id"});
-            compareTables.Add("floorsettings", new List<string>() {"id"});
-            compareTables.Add("jointmethods", new List<string>() {"id"});
-            //compareTables.Add("nodeatlases", new List<string>() {"value"});
-            compareTables.Add("nodeatlases", new List<string>() { "id" });
-            compareTables.Add("projectstages", new List<string>() {"id"});
-            compareTables.Add("propertyassociation", new List<string>() {"id"});
-            compareTables.Add("propertydefaults", new List<string>() {"id"});
-            compareTables.Add("propertytriggers", new List<string>() {"id"});
-            compareTables.Add("protectionlayersettingrules", new List<string>() {"id"});
-            compareTables.Add("provinces", new List<string>() {"id"});
-            //compareTables.Add("qspropertydefinitions", new List<string>() {"keyword"});
-            compareTables.Add("qspropertydefinitions", new List<string>() { "id" });
+           compareTables = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(compareTable);
+            //compareTables.Add("billcodelibs", new List<string>() {"id"});
+            //compareTables.Add("billcodes", new List<string>() { "id" });
+            //compareTables.Add("buildingcategories", new List<string>() {"id"});
+            //compareTables.Add("cities", new List<string>() {"id"});
+            ////compareTables.Add("civilsettings", new List<string>() {"cid"});
+            //compareTables.Add("civilsettings", new List<string>() { "id" });
 
-            //compareTables.Add("qspropertyoptions", new List<string>() {"optionkeyword"});
-            compareTables.Add("qspropertyoptions", new List<string>() { "id" });
+            //compareTables.Add("countries", new List<string>() {"id"});
+            //compareTables.Add("districts", new List<string>() {"id"});
+            //compareTables.Add("floorsettings", new List<string>() {"id"});
+            //compareTables.Add("jointmethods", new List<string>() {"id"});
+            ////compareTables.Add("nodeatlases", new List<string>() {"value"});
+            //compareTables.Add("nodeatlases", new List<string>() { "id" });
+            //compareTables.Add("projectstages", new List<string>() {"id"});
+            //compareTables.Add("propertyassociation", new List<string>() {"id"});
+            //compareTables.Add("propertydefaults", new List<string>() {"id"});
+            //compareTables.Add("propertytriggers", new List<string>() {"id"});
+            //compareTables.Add("protectionlayersettingrules", new List<string>() {"id"});
+            //compareTables.Add("provinces", new List<string>() {"id"});
+            ////compareTables.Add("qspropertydefinitions", new List<string>() {"keyword"});
+            //compareTables.Add("qspropertydefinitions", new List<string>() { "id" });
 
-            compareTables.Add("qstypebillcoderulelibs", new List<string>() {"id"});
-            compareTables.Add("qstypebillcoderules", new List<string>() {"id"});
-            compareTables.Add("qstypejoinrules", new List<string>() {"id"});
-            compareTables.Add("qstypejoints", new List<string>() {"id"});
-            compareTables.Add("qstypelibs", new List<string>() {"id"});
-            compareTables.Add("qstypemaprulelibs", new List<string>() {"id"});
-            compareTables.Add("qstypemaprules", new List<string>() {"id"});
-            //compareTables.Add("qstypeproperties", new List<string>() {"qstype"});
-            compareTables.Add("qstypeproperties", new List<string>() { "id" });
+            ////compareTables.Add("qspropertyoptions", new List<string>() {"optionkeyword"});
+            //compareTables.Add("qspropertyoptions", new List<string>() { "id" });
 
-            //compareTables.Add("qstypes", new List<string>() {"keyword"});
-            compareTables.Add("qstypes", new List<string>() { "id" });
+            //compareTables.Add("qstypebillcoderulelibs", new List<string>() {"id"});
+            //compareTables.Add("qstypebillcoderules", new List<string>() {"id"});
+            //compareTables.Add("qstypejoinrules", new List<string>() {"id"});
+            //compareTables.Add("qstypejoints", new List<string>() {"id"});
+            //compareTables.Add("qstypelibs", new List<string>() {"id"});
+            //compareTables.Add("qstypemaprulelibs", new List<string>() {"id"});
+            //compareTables.Add("qstypemaprules", new List<string>() {"id"});
+            ////compareTables.Add("qstypeproperties", new List<string>() {"qstype"});
+            //compareTables.Add("qstypeproperties", new List<string>() { "id" });
 
-            compareTables.Add("rebaranchorages", new List<string>() {"id"});
-            compareTables.Add("rebarattritionrates", new List<string>() {"id"});
-            compareTables.Add("rebarcalculatesettings", new List<string>() {"id"});
-            compareTables.Add("rebarcovers", new List<string>() {"id"});
-            compareTables.Add("rebardatadefinitions", new List<string>() {"id"});
-            compareTables.Add("rebardensities", new List<string>() {"id"});
-            compareTables.Add("rebarhooks", new List<string>() {"id"});
-            compareTables.Add("rebarlapjointsettings", new List<string>() {"id"});
-            compareTables.Add("releaseversions", new List<string>() {"id"});
-            compareTables.Add("reportconfigs", new List<string>() {"id"});
-            compareTables.Add("unitprecisions", new List<string>() {"id"});
-            compareTables.Add("wallthickdefinitions", new List<string>() {"id"});
+            ////compareTables.Add("qstypes", new List<string>() {"keyword"});
+            //compareTables.Add("qstypes", new List<string>() { "id" });
+
+            //compareTables.Add("rebaranchorages", new List<string>() {"id"});
+            //compareTables.Add("rebarattritionrates", new List<string>() {"id"});
+            //compareTables.Add("rebarcalculatesettings", new List<string>() {"id"});
+            //compareTables.Add("rebarcovers", new List<string>() {"id"});
+            //compareTables.Add("rebardatadefinitions", new List<string>() {"id"});
+            //compareTables.Add("rebardensities", new List<string>() {"id"});
+            //compareTables.Add("rebarhooks", new List<string>() {"id"});
+            //compareTables.Add("rebarlapjointsettings", new List<string>() {"id"});
+            //compareTables.Add("releaseversions", new List<string>() {"id"});
+            //compareTables.Add("reportconfigs", new List<string>() {"id"});
+            //compareTables.Add("unitprecisions", new List<string>() {"id"});
+            //compareTables.Add("wallthickdefinitions", new List<string>() {"id"});
+
+
+            //string s = JsonConvert.SerializeObject(compareTables);
+
         }
+
+
+
 
         public static string GetDataChanges(Database sourceDatabase, Database targetDatabase)
         {
