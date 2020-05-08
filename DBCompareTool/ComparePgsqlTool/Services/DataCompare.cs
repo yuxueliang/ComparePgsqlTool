@@ -125,16 +125,26 @@ namespace ComparePgsqlTool.Services
 
             foreach (DataRow targetRow in targetDataTable)
             {
-                List<object> values = new List<object>();
+                Dictionary<string,object> values = new Dictionary<string, object>();
                 foreach (var pkColumn in pkColumns)
                 {
-                    values.Add(targetRow.Columns.First(o => o.Name == pkColumn).Value);
+                    values.Add(pkColumn, targetRow.Columns.First(o => o.Name == pkColumn).Value);
                 }
 
                 DataRow sourceRow = null;
                 foreach (var row in sourceDataTable)
                 {
-                    if (row.Columns.Any(a => pkColumns.Contains(a.Name) && values.Contains(a.Value)))
+                    var i = 0;
+                    foreach (var value in values)
+                    {
+                        if (row.Columns.First(o => o.Name == value.Key).Value.ToString() != value.Value.ToString())
+                        {
+                            i = 1;
+                            break;
+                        }
+                    }
+
+                    if (i == 0)
                     {
                         sourceRow = row;
                         break;
@@ -149,20 +159,32 @@ namespace ComparePgsqlTool.Services
 
             foreach (var sourceRow in sourceDataTable)
             {
-                List<object> values = new List<object>();
+                Dictionary<string, object> values = new Dictionary<string, object>();
                 foreach (var pkColumn in pkColumns)
                 {
-                    values.Add(sourceRow.Columns.First(o => o.Name == pkColumn).Value);
+                    values.Add(pkColumn, sourceRow.Columns.First(o => o.Name == pkColumn).Value);
                 }
+
 
                 DataRow targetRow = null;
                 foreach (var row in targetDataTable)
                 {
-                    if (row.Columns.Any(a => pkColumns.Contains(a.Name) && values.Contains(a.Value)))
+                    var i = 0;
+                    foreach (var value in values)
+                    {
+                        if (row.Columns.First(o => o.Name == value.Key).Value.ToString() != value.Value.ToString())
+                        {
+                            i = 1;
+                            break;
+                        }
+                    }
+
+                    if (i == 0)
                     {
                         targetRow = row;
                         break;
                     }
+
                 }
 
                 if (targetRow == null)
@@ -353,7 +375,7 @@ namespace ComparePgsqlTool.Services
             {
                 if (where.Length > 0)
                 {
-                    where += "and ";
+                    where += " and ";
                 }
 
                 var pkValue = dataRow.Columns.First(o => o.Name == columnName).Value;

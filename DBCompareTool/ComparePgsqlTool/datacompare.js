@@ -24,7 +24,9 @@
             "id"
         ],
         "jointmethods": [
-            "id"
+            "typeid",
+            "name",
+            "atlas"
         ],
         "nodeatlases": [
             "id"
@@ -48,7 +50,7 @@
             "id"
         ],
         "qspropertydefinitions": [
-            "id"
+            "keyword"
         ],
         "qspropertyoptions": [
             "id"
@@ -78,7 +80,7 @@
             "id"
         ],
         "qstypes": [
-            "id"
+            "keyword"
         ],
         "rebaranchorages": [
             "id"
